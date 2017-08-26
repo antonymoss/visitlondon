@@ -1,8 +1,13 @@
 body {
-  background: green;
+  background: #000000;
+  color: #ffffff;
+  text-align: center;
+  overflow-x: hidden;
 }
 
-h1:hover {
-  -webkit-transition: color 1s ease;
-  transition: color 1s ease;
+.one:hover {
+  -webkit-transform: scaleX(3);
+  transform: scaleX(3);
+  -webkit-transition: color 3s ease;
+  transition: color 3s ease;
 }
