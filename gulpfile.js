@@ -6,17 +6,19 @@ var reload       = browserSync.reload;
 var autoPrefixer = require('gulp-autoprefixer');
 var clean        = require('gulp-clean');
 var concat       = require('gulp-concat');
+var browserify   = require('gulp-browserify');
+var merge        = require('merge-stream');
 
 var SOURCEPATHS = {
   sassSource: 'src/scss/*.scss',       //* any file in the folder
   htmlSource: 'src/*.html',
-  jsSource: 'src/js/**'                //** listen to everything in that folder
+  jsSource:   'src/js/**'                //** listen to everything in that folder
 }
 
 var APPPATHS = {
   root: 'app/',
-  css: 'app/css',
-  js: 'app/js'
+  css:  'app/css',
+  js:   'app/js'
 }
 
 /*=========================================================
@@ -24,10 +26,16 @@ RUN SASS & BROWSER SYNC
 =========================================================*/
 
 gulp.task('sass', function() {
-  return gulp.src(SOURCEPATHS.sassSource)                                      //IMPORTANT ORDER
+  var bootstrapCss = gulp.src('./node_modules/bootstrap/dist/css/bootstrap.css');
+  var sassFiles;
+
+  sassFiles = gulp.src(SOURCEPATHS.sassSource)                                      //IMPORTANT ORDER
     .pipe(autoPrefixer())                                                      //css auto prefix css3
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))          //expand sass output
-    .pipe(gulp.dest('app/css'));                                               //where the sass will be compiled to
+
+      return merge(bootstrapCss, sassFiles)
+      .pipe(concat('app.css'))
+      .pipe(gulp.dest('app/css'));                                               //where the sass will be compiled to
 })
 
 gulp.task('server', ['sass'], function() {
@@ -49,7 +57,8 @@ gulp.task('copy', ['clean-html'], function () {
 
 gulp.task('scripts', ['clean-scripts'], function () {
   gulp.src(SOURCEPATHS.jsSource)
-    .pipe(concat('main.js'))
+    .pipe(concat('main.js'))                                                   //compress js files into one file called main.js
+    .pipe(browserify())                                                        //includes bootsrap, jquery, & mustache js
     .pipe(gulp.dest(APPPATHS.js))
 })
 
