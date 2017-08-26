@@ -5,3 +5,6 @@ $black: #000000;
 body {
   background: green;
 }
+h1:hover {
+  transition: color 1s ease;
+}

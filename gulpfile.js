@@ -1,11 +1,13 @@
 //VARIABLES
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
+var gulp         = require('gulp');
+var sass         = require('gulp-sass');
+var browserSync  = require('browser-sync');
+var reload       = browserSync.reload;
+var autoPrefixer = require('gulp-autoprefixer');
 
 var SOURCEPATHS = {
-  sassSource: 'src/scss/*.scss' //* any file in the folder
+  sassSource: 'src/scss/*.scss', //* any file in the folder
+  htmlSource: 'src/*.html'
 }
 
 var APPPATHS = {
@@ -16,11 +18,15 @@ var APPPATHS = {
 //=========================================================
 
 gulp.task('sass', function() {
-  return gulp.src(SOURCEPATHS.sassSource)
-    .pipe(sass({
-      outputStyle: 'expanded'
-    }).on('error', sass.logError))
-    .pipe(gulp.dest('app/css')); //where the sass will be compiled to
+  return gulp.src(SOURCEPATHS.sassSource)                                      //IMPORTANT ORDER
+    .pipe(autoPrefixer())                                                      //css auto prefix css3
+    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))          //expand sass output
+    .pipe(gulp.dest('app/css'));                                               //where the sass will be compiled to
+})
+
+gulp.task('copy', function () {
+  gulp.src(SOURCEPATHS.htmlSource)
+    .pipe(gulp.dest(APPPATHS.root))
 })
 
 gulp.task('server', ['sass'], function() {
@@ -31,8 +37,10 @@ gulp.task('server', ['sass'], function() {
   })
 });
 
-gulp.task('watch', ['server', 'sass'], function() {
+gulp.task('watch', ['server', 'sass', 'copy'], function() {
   gulp.watch([SOURCEPATHS.sassSource], ['sass']);
+  gulp.watch([SOURCEPATHS.htmlSource], ['copy']);
+
 });
 
-gulp.task('default', ['watch']); //adds the tasks to the default request
+gulp.task('default', ['watch']);                                               //passes 'watch' through the default
