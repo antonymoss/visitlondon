@@ -6756,16 +6756,3 @@ button.close {
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
-body {
-  background: #000000;
-  color: #ffffff;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-.one:hover {
-  -webkit-transform: scaleX(3);
-  transform: scaleX(3);
-  -webkit-transition: color 3s ease;
-  transition: color 3s ease;
-}

@@ -12,13 +12,14 @@ var merge        = require('merge-stream');
 var SOURCEPATHS = {
   sassSource: 'src/scss/*.scss',       //* any file in the folder
   htmlSource: 'src/*.html',
-  jsSource:   'src/js/**'                //** listen to everything in that folder
+  jsSource:   'src/js/**'              //** listen to everything in that folder
 }
 
-var APPPATHS = {
+var APPPATHS = {                       //object containing the repository folders
   root: 'app/',
   css:  'app/css',
-  js:   'app/js'
+  js:   'app/js',
+  fonts: 'app/fonts'
 }
 
 /*=========================================================
@@ -45,6 +46,15 @@ gulp.task('server', ['sass'], function() {
     }
   })
 });
+
+/*=========================================================
+MOVE BOOTSRAP FONTS FROM DEPENDENCY TO WOKRING PROJECT
+=========================================================*/
+
+gulp.task('moveFonts', function () {
+  gulp.src('./node_modules/bootstrap/fonts/*.{eot,svg,ttf,woff,woff2}')        //source
+    .pipe(gulp.dest(APPPATHS.fonts))                                           //destination
+})
 
 /*=========================================================
 COPY FILES FROM THE SRC REPO & DETECT WHEN DELETED
@@ -76,7 +86,7 @@ gulp.task('clean-scripts', function () {
 WATCH ALL FUNCTIONS & PASS THROUGH THE 'default'
 =========================================================*/
 
-gulp.task('watch', ['server', 'sass', 'copy', 'clean-html', 'clean-scripts', 'scripts' ], function() {
+gulp.task('watch', ['server', 'sass', 'copy', 'clean-html', 'clean-scripts', 'scripts', 'moveFonts' ], function() {
   gulp.watch([SOURCEPATHS.sassSource], ['sass']);
   gulp.watch([SOURCEPATHS.htmlSource], ['copy']);
   gulp.watch([SOURCEPATHS.jsSource], ['scripts']);

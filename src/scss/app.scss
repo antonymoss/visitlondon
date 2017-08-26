@@ -1,16 +1,3 @@
 //VARIABLES
-$black: #000000;
+$black: #ddd;
 $white: #ffffff;
-
-
-body {
-  background: $black;
-  color: $white;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-.one:hover {
-  transform: scaleX(3);
-  transition: color 3s ease;
-}
