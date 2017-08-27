@@ -1,4 +1,4 @@
-//VARIABLES
+//VARIABLES – IMPORT LIBRARIES
 var gulp         = require('gulp');
 var sass         = require('gulp-sass');
 var browserSync  = require('browser-sync');
@@ -8,18 +8,23 @@ var clean        = require('gulp-clean');
 var concat       = require('gulp-concat');
 var browserify   = require('gulp-browserify');
 var merge        = require('merge-stream');
+var newer        = require('gulp-newer');
+var imagemin     = require('gulp-imagemin');
 
 var SOURCEPATHS = {
-  sassSource: 'src/scss/*.scss',       //* any file in the folder
-  htmlSource: 'src/*.html',
-  jsSource:   'src/js/**'              //** listen to everything in that folder
+  sassSource:     'src/scss/*.scss',       //* any file in the folder
+  htmlSource:     'src/*.html',
+  jsSource:       'src/js/**',              //** listen to everything in that folder
+  imgSource:      'src/img/**'
 }
 
-var APPPATHS = {                       //object containing the repository folders
-  root: 'app/',
-  css:  'app/css',
-  js:   'app/js',
-  fonts: 'app/fonts'
+
+var APPATHS    = {                       //object containing the repository folders
+  root:           'app/',
+  css:            'app/css',
+  js:             'app/js',
+  fonts:          'app/fonts',
+  img:            'app/img'
 }
 
 /*=========================================================
@@ -40,9 +45,9 @@ gulp.task('sass', function() {
 })
 
 gulp.task('server', ['sass'], function() {
-  browserSync.init([APPPATHS.css + '/*.css', APPPATHS.root + '/*.html', APPPATHS.js + '/*.js'], {
+  browserSync.init([APPATHS.css + '/*.css', APPATHS.root + '/*.html', APPATHS.js + '/*.js'], {
     server: {
-      baseDir: APPPATHS.root
+      baseDir: APPATHS.root
     }
   })
 });
@@ -53,8 +58,19 @@ MOVE BOOTSRAP FONTS FROM DEPENDENCY TO WOKRING PROJECT
 
 gulp.task('moveFonts', function () {
   gulp.src('./node_modules/bootstrap/fonts/*.{eot,svg,ttf,woff,woff2}')        //source
-    .pipe(gulp.dest(APPPATHS.fonts))                                           //destination
-})
+    .pipe(gulp.dest(APPATHS.fonts))                                           //destination
+});
+
+/*=========================================================
+COPY & COMPRESS IMAGES
+=========================================================*/
+
+gulp.task('images', function () {
+  return gulp.src(SOURCEPATHS.imgSource)
+  .pipe(newer(APPATHS.img))
+  .pipe(imagemin())
+  .pipe(gulp.dest(APPATHS.img));
+});
 
 /*=========================================================
 COPY FILES FROM THE SRC REPO & DETECT WHEN DELETED
@@ -62,31 +78,31 @@ COPY FILES FROM THE SRC REPO & DETECT WHEN DELETED
 
 gulp.task('copy', ['clean-html'], function () {
   gulp.src(SOURCEPATHS.htmlSource)
-    .pipe(gulp.dest(APPPATHS.root))
-})
+    .pipe(gulp.dest(APPATHS.root))
+});
 
 gulp.task('scripts', ['clean-scripts'], function () {
   gulp.src(SOURCEPATHS.jsSource)
     .pipe(concat('main.js'))                                                   //compress js files into one file called main.js
     .pipe(browserify())                                                        //includes bootsrap, jquery, & mustache js
-    .pipe(gulp.dest(APPPATHS.js))
-})
+    .pipe(gulp.dest(APPATHS.js))
+});
 
 gulp.task('clean-html', function () {
-  return gulp.src(APPPATHS.root + '/*.html', {read: false, force: true })      //delete files from the root globally
+  return gulp.src(APPATHS.root + '/*.html', {read: false, force: true })      //delete files from the root globally
     .pipe(clean());
-})
+});
 
 gulp.task('clean-scripts', function () {
-  return gulp.src(APPPATHS.js + '/*.js', {read: false, force: true })          //delete files from the root globally
+  return gulp.src(APPATHS.js + '/*.js', {read: false, force: true })          //delete files from the root globally
     .pipe(clean());
-})
+});
 
 /*=========================================================
 WATCH ALL FUNCTIONS & PASS THROUGH THE 'default'
 =========================================================*/
 
-gulp.task('watch', ['server', 'sass', 'copy', 'clean-html', 'clean-scripts', 'scripts', 'moveFonts' ], function() {
+gulp.task('watch', ['server', 'sass', 'copy', 'clean-html', 'clean-scripts', 'scripts', 'moveFonts', 'images' ], function() {
   gulp.watch([SOURCEPATHS.sassSource], ['sass']);
   gulp.watch([SOURCEPATHS.htmlSource], ['copy']);
   gulp.watch([SOURCEPATHS.jsSource], ['scripts']);
