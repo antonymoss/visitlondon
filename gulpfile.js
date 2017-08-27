@@ -58,8 +58,8 @@ gulp.task('sass', function() {
     .pipe(autoprefixer())                                                      //css auto prefix css3
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))          //expand sass output
       return merge(bootstrapCss, sassFiles)
-      .pipe(concat('project.css'))                                                 //concat bootsrap css & custom
-      .pipe(gulp.dest('project/css'));                                             //where the sass will be compiled to
+      .pipe(concat('project.css'))                                             //concat bootsrap css & custom
+      .pipe(gulp.dest('project/css'));                                         //where the sass will be compiled to
 });
 
 /** Production Tasks **/
@@ -109,7 +109,7 @@ gulp.task('server', ['sass'], function() {
 
 gulp.task('moveFonts', function () {
   gulp.src('./node_modules/bootstrap/fonts/*.{eot,svg,ttf,woff,woff2}')        //source
-    .pipe(gulp.dest(PROJECT.fonts))                                           //destination
+    .pipe(gulp.dest(PROJECT.fonts))                                            //destination
 });
 
 /*=========================================================
@@ -161,12 +161,12 @@ gulp.task('compress', function () {
 // });
 
 gulp.task('clean-html', function () {
-  return gulp.src(PROJECT.root + '/*.html', {read: false, force: true })      //delete files from the root globally
+  return gulp.src(PROJECT.root + '/*.html', {read: false, force: true })       //delete files from the root globally
     .pipe(clean());
 });
 
 gulp.task('clean-scripts', function () {
-  return gulp.src(PROJECT.js + '/*.js', {read: false, force: true })          //delete files from the root globally
+  return gulp.src(PROJECT.js + '/*.js', {read: false, force: true })           //delete files from the root globally
     .pipe(clean());
 });
 
