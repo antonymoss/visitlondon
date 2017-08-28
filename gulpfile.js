@@ -32,6 +32,7 @@ var htmlmin        = require('gulp-htmlmin');
 // 2: OBJECTS
 var SOURCE    = {
   sassSource:        'src/scss/*.scss',          //* any file in the folder
+  sassStyle:         'src/scss/style.scss',
   htmlSource:        'src/*.html',
   htmlPartialSource: 'src/partial/*.html',
   jsSource:          'src/js/**',                //** listen to everything in that folder
@@ -40,10 +41,10 @@ var SOURCE    = {
 
 var PROJECT        = {                           //object containing the repository folders
   root:              'project/',
-  css:               'project/css',
-  js:                'project/js',
-  fonts:             'project/fonts',
-  img:               'project/img'
+  css:               'project/assets/css',
+  js:                'project/assets/js',
+  fonts:             'project/assets/fonts',
+  img:               'project/assets/img'
 }
 
 /*=========================================================
@@ -51,15 +52,10 @@ var PROJECT        = {                           //object containing the reposit
 =========================================================*/
 
 gulp.task('sass', function() {
-  var bootstrapCss = gulp.src('./node_modules/bootstrap/dist/css/bootstrap.css');
-  var sassFiles;
-
-  sassFiles = gulp.src(SOURCE.sassSource)                                      //IMPORTANT ORDER
+  sassFiles = gulp.src(SOURCE.sassStyle)                                       //IMPORTANT ORDER
     .pipe(autoprefixer())                                                      //css auto prefix css3
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))          //expand sass output
-      return merge(bootstrapCss, sassFiles)
-      .pipe(concat('project.css'))                                             //concat bootsrap css & custom
-      .pipe(gulp.dest('project/css'));                                         //where the sass will be compiled to
+      .pipe(gulp.dest('project/assets/css'));                                  //where the sass will be compiled to
 });
 
 /** Production Tasks **/
@@ -72,13 +68,10 @@ gulp.task('compress',  function() {
 });
 
 gulp.task('compresscss', function(){
-  var bootstrapCSS = gulp.src('./node_modules/bootstrap/dist/css/bootstrap.css');
-  var sassFiles;
   sassFiles = gulp.src(SOURCE.sassSource)
       .pipe(autoprefixer())
       .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-      return merge(bootstrapCSS, sassFiles)
-          .pipe(concat('project.css'))
+          .pipe(concat('style.css'))
           .pipe(cssmin())
           .pipe(rename({suffix: '.min'}))
           .pipe(gulp.dest(PROJECT.css));
@@ -101,15 +94,6 @@ gulp.task('server', ['sass'], function() {
       baseDir: PROJECT.root
     }
   })
-});
-
-/*=========================================================
-5: MOVE BOOTSRAP FONTS FROM DEPENDENCY TO WOKRING PROJECT
-=========================================================*/
-
-gulp.task('moveFonts', function () {
-  gulp.src('./node_modules/bootstrap/fonts/*.{eot,svg,ttf,woff,woff2}')        //source
-    .pipe(gulp.dest(PROJECT.fonts))                                            //destination
 });
 
 /*=========================================================
@@ -174,7 +158,7 @@ gulp.task('clean-scripts', function () {
 10: WATCH ALL FUNCTIONS DURING THE PRODUCTION PROCESS
 =========================================================*/
 
-gulp.task('watch', ['server', 'sass', 'clean-html', 'html', 'clean-scripts', 'scripts', 'moveFonts', 'images' ], function() {
+gulp.task('watch', ['server', 'sass', 'clean-html', 'html', 'clean-scripts', 'scripts', 'images' ], function() {
   gulp.watch([SOURCE.sassSource], ['sass']);
   // gulp.watch([SOURCE.htmlSource], ['copy']);
   gulp.watch([SOURCE.jsSource], ['scripts']);

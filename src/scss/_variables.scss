@@ -1,0 +1,71 @@
+/**********************************************************
+VARIABLES:               TO MAKE CHANGES GLOBALLY
+**********************************************************/
+
+//COLOURS
+$white:                  #fff;
+$blue:                   #0076a3;
+$darkblue:               darken($blue, 10);
+$lightblue:              lighten($blue, 10);
+$yellow:                 #ffba00;
+$green:                  #548c27;
+$red:                    #fe2d28;
+$black:                  #000;
+
+//REUSABLE VARIABLES
+$bg-colour:              $blue;
+$text-colour:            $black;
+
+//NAVIGATION
+$nav-bg-colour:          $darkblue;
+$menu-item-font-size:    1.4rem;
+$menu-item-colour:       $white;
+$menu-item-hover-colour: $yellow;
+
+//CARDS
+$card-bg-colour:         $white;
+$card-font-size:         1rem;
+
+//PARAGRAPHS
+$paragraph-font-size:    1.8rem;
+$paragraph-font-family:  'Open Sans', sans-serif;
+
+//HEADINGS
+$heading-colour:         $yellow;
+$heading-font-family:    'Bitter', serif;
+$heading-font-weight:    400;
+$heading-font-size:      (
+  h1:                    40px,
+  h2:                    36px,
+  h3:                    32px,
+  h4:                    28px,
+  h5:                    24px,
+  h6:                    20px
+);
+
+//VISIT
+$visit-border-colour:    $white;
+$visit-heading-colour:   lighten($yellow, 10);
+$visit-text-colour:      $white;
+
+//GRID & RESPONSIVE
+$breakpoints:            (
+  phone:                 480px, //IF DEVICE IS GREATER THAN OR EQUAL TO
+  tablet:                768px, //IF DEVICE IS GREATER THAN OR EQUAL TO
+  desktop:               1024px //IF DEVICE IS GREATER THAN OR EQUAL TO
+);
+$columns:                12;
+$grid-max-width:         1200px;
+
+//BUTTONS
+$btn-font-size:          16px;
+$btn-font-weight:        700;
+
+//TABLES
+$table-font-size: 1rem;
+$table-caption-font-family: $heading-font-family;
+$table-colour: $white;
+
+//FOOTER
+$bg-footer:              $darkblue;
+$footer-colour:              $white;

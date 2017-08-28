@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+  text-align: left;
+  font-size: $table-font-size;
+  border-collapse: collapse;
+
+  > caption { //> means first child
+    text-align: left;
+    font-family: $table-caption-font-family;
+    font-size: map-get($heading-font-size, h2);
+    font-weight: 700;
+    color: $yellow;
+  }
+  thead tr th {
+    background: darken ($blue, 20);
+    color: $white;
+    font-size: 1.3rem;
+  }
+  >thead,
+  >tbody {
+    >tr {
+      color: $table-colour;
+      background: $darkblue;
+
+      &:nth-child(odd) {
+        background: $blue;
+      }
+      &:hover {
+        background: darken($yellow, 5);
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px dotted $darkblue;
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+.navigation {
+  @include clearfix;
+  background: $nav-bg-colour;
+  padding: 10px;
+
+  h2 {
+    text-align: left;
+    margin: 0;
+
+    &.site-name {
+      display: none;
+      @include tablet {
+        display: inline-block;
+      }
+    }
+
+    &.nav-title {
+      display: block;
+      text-align: center;
+      @include tablet {
+        display: none;
+      }
+    }
+  }
+  nav {
+    display: inline;
+    margin-top: 10px;
+    @include tablet {
+      float: right;
+    }
+    a {
+      color: $menu-item-colour;
+      font-size: $menu-item-font-size;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 20px;
+      text-align: center;
+
+      &:hover {
+        color: $menu-item-hover-colour;
+      }
+
+      @include tablet {
+        display: inline;
+        text-align: left;
+        margin-right: 20px;
+
+      }
+      @include desktop {
+        &:last-child { //& is the same as a:last-child
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.footer-navigation {
+  @extend .navigation;  //extend inherits all the styles of a class
+
+  .menu {
+    float: left;
+    font-size: 1.1rem;
+  }
+}
